@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 // import notes from '../assets/data.js'
 import ListItem from '../components/ListItem.js'
 import AddButton from '../components/AddButton.js'
@@ -11,10 +11,14 @@ const NotesListPage = () => {
     }, []) // fires once when the component is mounted
 
     let getNotes = async () => {
-        let response = await fetch('/api/notes/')
-        let data = await response.json()
-        console.log(data)
-        setNote(data)
+        try {
+            let response = await fetch('/api/notes/')
+            let data = await response.json()
+            console.log(data)
+            setNote(data)
+        } catch (error) {
+            console.error('Error fetching notes:', error)
+        }
     }
 
     return (
@@ -26,15 +30,15 @@ const NotesListPage = () => {
                 <p className="notes-count">{notes.length}</p>
             </div>
             <div className='notes-list'>
-                {notes.map((note,index) => {
+                {notes.map((note, index) => {
                     return (
                         <div className='note-preview' key={index}>
-                            <ListItem note={note}/>
+                            <ListItem note={note} />
                         </div>
                     )
                 })}
             </div>
-            <AddButton/>
+            <AddButton />
         </div>
     )
 }
