@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import NoteSerializer
 from .models import Note
+from django.contrib.auth.decorators import login_required
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -91,3 +92,9 @@ def createNote(request):
             return Response(serializer.data, status=201)
         else:
             return Response(serializer.errors, status=400)
+
+@login_required
+@api_view(['GET'])
+def home(request):
+    return Response('Welcome to the home page!')
+
