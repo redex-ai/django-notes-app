@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -64,7 +65,7 @@ def updateNote(request, pk):
             note = Note.objects.get(id=pk)
             serializer = NoteSerializer(instance=note, data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(updated=datetime.now())  # Update the 'updated' field with current date and time
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=400)
