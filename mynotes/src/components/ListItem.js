@@ -21,6 +21,7 @@ let getContent = (note) => {
 }
 
 const ListItem = ({note}) => {
+    console.log('Rendering list item:', note.id);
     return (
     <div className='notes-list-item'>
         <Link to={`/note/${note.id}`}>
