@@ -2,8 +2,8 @@ import datetime
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import NoteSerializer
-from .models import Note
+from .serializers import NoteSerializer, UserSerializer
+from .models import Note, User
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -37,6 +37,12 @@ def getRoutes(request):
             'method': 'DELETE',
             'body': None,
             'description': 'Deletes and exiting note'
+        },
+        {
+            'Endpoint': '/register/',
+            'method': 'POST',
+            'body': {'username': "", 'email': "", 'password': ""},
+            'description': 'Registers a new user'
         },
     ]
     return Response(routes)
@@ -86,6 +92,16 @@ def deleteNote(request, pk):
 def createNote(request):
     if request.method == 'POST':
         serializer = NoteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        else:
+            return Response(serializer.errors, status=400)
+
+@api_view(['POST'])
+def registerUser(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
