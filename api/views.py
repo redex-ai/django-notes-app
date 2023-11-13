@@ -1,4 +1,5 @@
 import datetime
+import random
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -91,3 +92,35 @@ def createNote(request):
             return Response(serializer.data, status=201)
         else:
             return Response(serializer.errors, status=400)
+
+@api_view(['GET'])
+def generate_hardcoded_tasks(request):
+    if request.method == 'GET':
+        tasks = []
+        for _ in range(50):
+            task = {
+                'title': generate_random_title(),
+                'description': generate_random_description(),
+                'due_date': generate_random_due_date(),
+                'status': generate_random_status()
+            }
+            tasks.append(task)
+        return Response(tasks)
+
+def generate_random_title():
+    titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5']
+    return random.choice(titles)
+
+def generate_random_description():
+    descriptions = ['Lorem ipsum dolor sit amet', 'Consectetur adipiscing elit', 'Sed do eiusmod tempor incididunt', 'Ut labore et dolore magna aliqua', 'Ut enim ad minim veniam']
+    return random.choice(descriptions)
+
+def generate_random_due_date():
+    start_date = datetime.date.today()
+    end_date = start_date + datetime.timedelta(days=30)
+    random_date = random.choice([start_date + datetime.timedelta(days=x) for x in range((end_date - start_date).days)])
+    return random_date
+
+def generate_random_status():
+    statuses = ['Pending', 'In Progress', 'Completed']
+    return random.choice(statuses)

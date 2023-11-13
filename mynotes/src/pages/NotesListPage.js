@@ -1,20 +1,22 @@
-import React, { useState,useEffect } from 'react'
-// import notes from '../assets/data.js'
+import React, { useState, useEffect } from 'react'
 import ListItem from '../components/ListItem.js'
 import AddButton from '../components/AddButton.js'
 
 const NotesListPage = () => {
-    let [notes, setNote] = useState([])
+    const [notes, setNotes] = useState([])
 
     useEffect(() => {
         getNotes()
-    }, []) // fires once when the component is mounted
+    }, [])
 
-    let getNotes = async () => {
-        let response = await fetch('/api/notes/')
-        let data = await response.json()
-        console.log(data)
-        setNote(data)
+    const getNotes = async () => {
+        try {
+            const response = await fetch('/api/notes/')
+            const data = await response.json()
+            setNotes(data)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -26,15 +28,13 @@ const NotesListPage = () => {
                 <p className="notes-count">{notes.length}</p>
             </div>
             <div className='notes-list'>
-                {notes.map((note,index) => {
-                    return (
-                        <div className='note-preview' key={index}>
-                            <ListItem note={note}/>
-                        </div>
-                    )
-                })}
+                {notes.map((note, index) => (
+                    <div className='note-preview' key={index}>
+                        <ListItem note={note} />
+                    </div>
+                ))}
             </div>
-            <AddButton/>
+            <AddButton />
         </div>
     )
 }
