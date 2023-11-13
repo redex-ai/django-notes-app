@@ -1,4 +1,7 @@
-let notes = [
+import random
+import datetime
+
+notes = [
     {
         "id": 1,
         "body": "Todays Agenda\n\n- Walk Dog\n- Feed fish\n- Play basketball\n- Eat a salad",
@@ -16,4 +19,14 @@ let notes = [
     }
 ]
 
-export default notes;
+for i in range(4, 54):
+    note = {
+        "id": i,
+        "body": f"Random Note {i}",
+        "updated": datetime.datetime.now().isoformat() + "Z",
+    }
+    notes.append(note)
+
+exported_notes = "export default " + str(notes) + ";"
+
+print(exported_notes)
