@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from .views import getRoutes, getNotes, updateNote, deleteNote, createNote, getNote
 
 urlpatterns = [
     path('', getRoutes, name="routes"),
