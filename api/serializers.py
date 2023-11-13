@@ -1,9 +1,9 @@
-from django.db import models
+from rest_framework import serializers  # Import serializers
+from rest_framework.serializers import ModelSerializer
+from .models import Note
 
-class Note(models.Model):
-    body = models.TextField(null=True, blank=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.body[0:69]
+class NoteSerializer(ModelSerializer):
+    updated = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    class Meta:
+        model = Note
+        fields = '__all__'
