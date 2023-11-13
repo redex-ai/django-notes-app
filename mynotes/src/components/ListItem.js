@@ -8,9 +8,14 @@ let getTitle = (note) => {
     }
     return title
 }
+
 let getDate = (note) => {
-    return new Date(note.updated).toLocaleDateString()
+    let updatedDate = new Date(note.updated)
+    let date = updatedDate.toLocaleDateString()
+    let time = updatedDate.toLocaleTimeString()
+    return `${date} ${time}`
 }
+
 let getContent = (note) => {
     let title = note.body.split('\n')[0]
     let content = note.body.replace(title, "")
@@ -22,14 +27,14 @@ let getContent = (note) => {
 
 const ListItem = ({note}) => {
     return (
-    <div className='notes-list-item'>
-        <Link to={`/note/${note.id}`}>
-            <h3>{getTitle(note)}</h3>
-            <p>{getContent(note)}</p>
-            <p>{getDate(note)}</p>
-        </Link>
-    </div>
-  )
+        <div className='notes-list-item'>
+            <Link to={`/note/${note.id}`}>
+                <h3>{getTitle(note)}</h3>
+                <p>{getContent(note)}</p>
+                <p>{getDate(note)}</p>
+            </Link>
+        </div>
+    )
 }
 
 export default ListItem
