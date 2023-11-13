@@ -10,15 +10,17 @@ import NotesListPage from './pages/NotesListPage';
 import NotePage from './pages/NotePage';
 
 function App() {
+  console.log("App component mounted");
+
   return (
     <Router>
       <div className="container dark">
         <div className="app">
-        <Header />
-        <Routes>
-          <Route path='/' element={ <NotesListPage/> } />
-          <Route path='/note/:id' element={ <NotePage/> } />
-        </Routes>
+          <Header />
+          <Routes>
+            <Route path='/' element={<NotesListPage />} />
+            <Route path='/note/:id' element={<NotePage />} />
+          </Routes>
         </div>
       </div>
     </Router>
