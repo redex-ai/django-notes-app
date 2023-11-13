@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import getRoutes, getNotes, updateNote, deleteNote, createNote, getNote
+from .views import getRoutes, getNotes, updateNote, deleteNote, createNote, getNote, registerUser, loginUser
 
 urlpatterns = [
     path('', getRoutes, name="routes"),
@@ -8,4 +8,6 @@ urlpatterns = [
     path('notes/<str:pk>/delete/', deleteNote, name="delete-note"),
     path('notes/create/', createNote, name="create-note"),
     path('notes/<str:pk>/', getNote, name="note"),
+    path('register/', registerUser, name="register"),
+    path('login/', loginUser, name="login"),
 ]
