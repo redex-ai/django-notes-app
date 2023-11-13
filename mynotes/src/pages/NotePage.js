@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useParams,useNavigate,Link } from 'react-router-dom'
-// import notes from '../assets/data.js'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
 
 const NotePage = () => {
-  let { id }  = useParams();
+  let { id } = useParams()
   let navigate = useNavigate()
   let [note, setNote] = useState({})
+
   useEffect(() => {
     let getNote = async () => {
       if (id === 'new') return
       let response = await fetch(`/api/notes/${id}`)
       let data = await response.json()
-      console.log(data)
+      console.log('API response:', data)
       setNote(data)
     }
     getNote()
@@ -24,8 +24,11 @@ const NotePage = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({...note, 'updated': new Date()})
+      body: JSON.stringify({ ...note, updated: new Date() })
     })
+      .then(response => response.json())
+      .then(data => console.log('Create note:', data))
+      .catch(error => console.error('Create note error:', error))
   }
 
   let updateNote = async () => {
@@ -34,15 +37,26 @@ const NotePage = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({...note, 'updated': new Date()})
+      body: JSON.stringify({ ...note, updated: new Date() })
     })
+      .then(response => response.json())
+      .then(data => console.log('Update note:', data))
+      .catch(error => console.error('Update note error:', error))
   }
 
   let deleteNote = async () => {
     await fetch(`/api/notes/${id}/delete/`, {
       method: 'DELETE'
     })
-    navigate('/')
+      .then(response => {
+        if (response.status === 204) {
+          console.log('Note deleted successfully')
+          navigate('/')
+        } else {
+          console.error('Delete note error:', response.status)
+        }
+      })
+      .catch(error => console.error('Delete note error:', error))
   }
 
   let handleSubmit = () => {
@@ -50,7 +64,7 @@ const NotePage = () => {
       deleteNote()
     } else if (id !== 'new') {
       updateNote()
-    } else if (id ==='new' && note !== null) {
+    } else if (id === 'new' && note !== null) {
       createNote()
     }
     navigate('/')
@@ -66,13 +80,17 @@ const NotePage = () => {
         </h3>
         {id !== 'new' ? (
           <button onClick={deleteNote}>Delete</button>
-        ):(
+        ) : (
           <button onClick={handleSubmit}>Save</button>
         )}
       </div>
       <div className="note-body">
-        <textarea onChange={(e) => {setNote({...note, 'body':e.target.value})}} value={note.body}>  
-        </textarea>
+        <textarea
+          onChange={(e) => {
+            setNote({ ...note, body: e.target.value })
+          }}
+          value={note.body}
+        ></textarea>
       </div>
     </div>
   )
